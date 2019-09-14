@@ -8,48 +8,50 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "api_planet")
-public class Planet {
+@Table(name= "api_star")
+public class Star {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name ="planet_id")
+	@Column(name ="star_id")
 	private int id;
 	
-	@Column(name="planet_name")
+	@Column(name="star_name")
 	private String name;
 	
-	@Column(name="planet_size")
-	private double size;
+	@Column(name="star_density")
+	private double density;
+
+	public Star() {}
 	
-
-	public double getSize() {
-		return size;
-	}
-
-	public void setSize(double size) {
-		this.size = size;
-	}
-
-	public Planet() {}
-		
-	public Planet(int id, String name) {
-		super();
+	public Star(int id, String name, double density) {
 		this.id = id;
 		this.name = name;
+		this.density = density;
 	}
 
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public double getDensity() {
+		return density;
+	}
+
+	public void setDensity(double density) {
+		this.density = density;
 	}
 	
 	

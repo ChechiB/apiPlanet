@@ -1,37 +1,29 @@
 package com.example.demo.DTO;
 
-public class PlanetDTO {
-
-	private int id;
-	private String name;
-	private double size;
+public class StarDTO {
+	private int id;	
+	private String name;	
+	private double density;
 	
-	public PlanetDTO() {
-		
-	}
-
+	public StarDTO() {}
+	
 	public int getId() {
 		return id;
 	}
-
 	public void setId(int id) {
 		this.id = id;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public double getSize() {
-		return size;
+	public double getDensity() {
+		return density;
 	}
-
-	public void setSize(double size) {
-		this.size = size;
+	public void setDensity(double density) {
+		this.density = density;
 	}
 	
 	
