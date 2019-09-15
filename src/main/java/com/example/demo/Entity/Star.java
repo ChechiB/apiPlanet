@@ -1,41 +1,31 @@
 package com.example.demo.Entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name= "api_star")
-public class Star {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name ="star_id")
-	private int id;
+public class Star extends Base{
 	
 	@Column(name="star_name")
 	private String name;
+	
+	@OneToMany(mappedBy = "star")
+	private List<Planet> planets = new ArrayList();
 	
 	@Column(name="star_density")
 	private double density;
 
 	public Star() {}
 	
-	public Star(int id, String name, double density) {
-		this.id = id;
+	public Star(String name, double density) {
 		this.name = name;
 		this.density = density;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getName() {

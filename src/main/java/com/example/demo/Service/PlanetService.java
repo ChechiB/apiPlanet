@@ -5,11 +5,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.DTO.PlanetDTO;
+import com.example.demo.DTO.StarDTO;
 import com.example.demo.Entity.Planet;
+import com.example.demo.Entity.Star;
 import com.example.demo.Repository.PlanetRepository;
 
 @Service
@@ -21,71 +24,76 @@ public class PlanetService {
 		this.planetRepository = planetRepository;
 	}
 	
-	public PlanetDTO getOne(int id) {
+	public PlanetDTO getOne(int id) throws Exception{
 		Optional<Planet> tmpPlanet = planetRepository.findById(id);
-		PlanetDTO planetDTO = new PlanetDTO();
 		
 		try {
 			Planet planet = tmpPlanet.get();
-			planetDTO.setId(planet.getId());
-			planetDTO.setName(planet.getName());
-			planetDTO.setSize(planet.getSize());
-			return planetDTO;
+			ModelMapper modelMapper = new ModelMapper();
+			return modelMapper.map(planet, PlanetDTO.class);
 		} catch (Exception e) {
-			return planetDTO;
+			throw new Exception();
 		}
 	}
 	
-	public List<PlanetDTO> getAll(){
-		List<PlanetDTO> planetsDTOs = new ArrayList<PlanetDTO>();
-		
-		for (Planet planet : planetRepository.findAll() ) {
-			PlanetDTO planetDTO = new PlanetDTO();
-			planetDTO.setId(planet.getId());
-			planetDTO.setName(planet.getName());
-			planetDTO.setSize(planet.getSize());
-			planetsDTOs.add(planetDTO);
-		}
-		
-		return planetsDTOs;
-	}
-	
-	public PlanetDTO post(PlanetDTO planetDTO) {
-		Planet planet = new Planet();
-		planet.setName(planetDTO.getName());
-		planet.setSize(planetDTO.getSize());
+	public List<PlanetDTO> getAll() throws Exception{
+		List<PlanetDTO> planetDTOs = new ArrayList<PlanetDTO>();
+		ModelMapper modelMapper = new ModelMapper();
 		try {
-			planetRepository.save(planet);
+			for (Planet planet : planetRepository.findAll() ) {
+				PlanetDTO planetDTO = modelMapper.map(planet, PlanetDTO.class);
+				planetDTOs.add(planetDTO);
+			}
+			
+			return planetDTOs;
 		} catch (Exception e) {
-			// TODO: handle exception
+			throw new Exception();
+		}
+	}
+	
+	public PlanetDTO post(PlanetDTO planetDTO) throws Exception{
+		ModelMapper modelMapper = new ModelMapper();
+		try {
+			Planet planet = modelMapper.map(planetDTO, Planet.class);
+			//Por standar se devuelve un objeto
+			planet = planetRepository.save(planet);
+			return modelMapper.map(planet, PlanetDTO.class);
+		} catch (Exception e) {
+			throw new Exception();
 		}
 		
-		planetDTO.setId(planet.getId());
-		return planetDTO;
 	}
 	
-	public PlanetDTO put(PlanetDTO planetDTO, int id) {
-		Optional<Planet> temp = planetRepository.findById(id);			
-		try {		
+	public PlanetDTO put(PlanetDTO planetDTO, int id) throws Exception {
+		Optional<Planet> temp = planetRepository.findById(id);		
+		ModelMapper modelMapper = new ModelMapper();
+
+		try {	
 			Planet planet = temp.get();
-			planet.setName(planetDTO.getName());
-			planet.setSize(planetDTO.getSize());
-			planetRepository.save(planet);		
+			planet = modelMapper.map(planetDTO, Planet.class);
+			planet = planetRepository.save(planet);		
 			planetDTO.setId(planet.getId());		
+			return modelMapper.map(planet, PlanetDTO.class);			 
 		} catch (Exception e) {			
+			throw new Exception();
 		}			
-		return planetDTO;	
 	}
 	
-	public boolean delete(int id) {
-		Optional<Planet> temp = planetRepository.findById(id);	
-		try {					
-			planetRepository.delete(temp.get());
-			return true;		
+	public boolean delete(int id) throws Exception {
+		try {				
+			if(planetRepository.existsById(id)) {
+				Optional<Planet> temp = planetRepository.findById(id);	
+				planetRepository.delete(temp.get());
+				return true;
+			}else {
+				return false;
+			}
+					
 		} catch (Exception e) {
 			return false;
 			
 		}
 	}
+	
 	
 }

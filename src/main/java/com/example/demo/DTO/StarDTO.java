@@ -1,9 +1,15 @@
 package com.example.demo.DTO;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.example.demo.Entity.Planet;
+
 public class StarDTO {
 	private int id;	
 	private String name;	
 	private double density;
+	private List<PlanetDTO> planets = new ArrayList();
 	
 	public StarDTO() {}
 	
@@ -24,6 +30,14 @@ public class StarDTO {
 	}
 	public void setDensity(double density) {
 		this.density = density;
+	}
+
+	public List<PlanetDTO> getPlanets() {
+		return planets;
+	}
+
+	public void setPlanets(List<PlanetDTO> planets) {
+		this.planets = planets;
 	}
 	
 	
