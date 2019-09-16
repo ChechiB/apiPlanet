@@ -1,15 +1,11 @@
 package com.example.demo.DTO;
 
-import java.util.List;
-
-public class PlanetDTO {
-
+public class PlanetSimpleDTO {
 	private int id;
 	private String name;
 	private double size;
-	private StarSimpleDTO star;
 	
-	public PlanetDTO() {
+	public PlanetSimpleDTO() {
 		
 	}
 
@@ -37,13 +33,4 @@ public class PlanetDTO {
 		this.size = size;
 	}
 
-	public StarSimpleDTO getStar() {
-		return star;
-	}
-
-	public void setStar(StarSimpleDTO star) {
-		this.star = star;
-	}
-	
-	
 }
