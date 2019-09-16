@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -65,8 +67,9 @@ public class StarService {
 		ModelMapper modelMapper = new ModelMapper();
 
 		try {	
-			Star star = temp.get();
-			star = modelMapper.map(starDTO, Star.class);
+			Star stardb = temp.get();
+			Star star = modelMapper.map(starDTO, Star.class);
+			star.setId(stardb.getId());
 			star = starRepository.save(star);		
 			starDTO.setId(star.getId());		
 			return modelMapper.map(star, StarDTO.class);			 
@@ -74,7 +77,7 @@ public class StarService {
 			throw new Exception();
 		}			
 	}
-	
+
 	public boolean delete(int id) throws Exception {
 		try {				
 			if(starRepository.existsById(id)) {
@@ -82,12 +85,11 @@ public class StarService {
 				starRepository.delete(temp.get());
 				return true;
 			}else {
-				return false;
+				throw new Exception();
 			}
 					
 		} catch (Exception e) {
-			return false;
-			
+			throw new Exception();			
 		}
 	}
 	

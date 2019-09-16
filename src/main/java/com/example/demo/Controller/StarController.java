@@ -2,8 +2,12 @@ package com.example.demo.Controller;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,29 +28,37 @@ public class StarController {
 	StarService starService;
 
 	public StarController(StarService starService) {
-		super();
 		this.starService = starService;
 	}
 	
+	//https://www.baeldung.com/spring-response-entity
 	@GetMapping(path = "/{id}")
-	public StarDTO getOne(@PathVariable int id) {
-		return new StarDTO();
+	public ResponseEntity getOne(@PathVariable int id) {
+		try {
+			return ResponseEntity.status(200).body(starService.getOne(id));
+		} catch (Exception e) {
+			return ResponseEntity.status(404).body("No se encontro la estrella solicitada");
+		}
 	}
 	
 	@GetMapping(path = "/")
-	public List<StarDTO> getAll(){
-		return ResponseEntity.status(200).body(starService.getAll()).getBody();
+	public ResponseEntity getAll(){
+		try {
+			return ResponseEntity.status(200).body(starService.getAll());
+		} catch (Exception e) {
+			return ResponseEntity.status(404).body("No se encontraron estrellas");
+		}
 	}
 	
-	@PostMapping(path = "/")
+	@PostMapping(path = "/")	
 	public ResponseEntity post(@RequestBody StarDTO starDTO) {
 		StarDTO rst = new StarDTO();
 		try {
 			rst = starService.post(starDTO);
+			return ResponseEntity.status(201).body(rst);
 		} catch (Exception e) {
-			// TODO: handle exception
+			return ResponseEntity.status(404).body("Solicitud no valida");
 		}
-		return ResponseEntity.status(201).body(rst);
 	}
 	
 	@PutMapping(path = "/{id}")
@@ -54,20 +66,20 @@ public class StarController {
 		StarDTO rst = new StarDTO();
 		try {
 			rst = starService.put(starDTO, id);
+			return ResponseEntity.status(201).body(starDTO);
 		} catch (Exception e) {
-			// TODO: handle exception
+			return ResponseEntity.status(404).body("Solicitud no valida");
 		}
 		
-		return ResponseEntity.status(201).body(starDTO);
 	}
 	
-	@DeleteMapping(path = "/{id}")
+	@DeleteMapping(path = "/{id}")	
 	public ResponseEntity delete(@PathVariable int id) {
-		boolean rstEstado = starService.delete(id); 
-		if (rstEstado) {
+		try {
+			starService.delete(id); 
 			return ResponseEntity.status(204).body("");
-		} else {
-			return ResponseEntity.status(204).body("No funciona");
+		} catch (Exception e) {
+			return ResponseEntity.status(404).body("No se pudo eliminar");
 		}
 	}
 }

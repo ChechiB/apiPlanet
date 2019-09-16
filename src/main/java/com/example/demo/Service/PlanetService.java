@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ public class PlanetService {
 		this.planetRepository = planetRepository;
 	}
 	
+	
 	public PlanetDTO getOne(int id) throws Exception{
 		Optional<Planet> tmpPlanet = planetRepository.findById(id);
 		
@@ -35,6 +38,7 @@ public class PlanetService {
 			throw new Exception();
 		}
 	}
+	
 	
 	public List<PlanetDTO> getAll() throws Exception{
 		List<PlanetDTO> planetDTOs = new ArrayList<PlanetDTO>();
@@ -50,27 +54,30 @@ public class PlanetService {
 			throw new Exception();
 		}
 	}
-	
+
 	public PlanetDTO post(PlanetDTO planetDTO) throws Exception{
 		ModelMapper modelMapper = new ModelMapper();
 		try {
 			Planet planet = modelMapper.map(planetDTO, Planet.class);
+			System.out.print("star:"+ planet.getStar().getId());
 			//Por standar se devuelve un objeto
 			planet = planetRepository.save(planet);
 			return modelMapper.map(planet, PlanetDTO.class);
 		} catch (Exception e) {
+			System.out.print("Exception:" +e);
 			throw new Exception();
 		}
 		
 	}
-	
+
 	public PlanetDTO put(PlanetDTO planetDTO, int id) throws Exception {
 		Optional<Planet> temp = planetRepository.findById(id);		
 		ModelMapper modelMapper = new ModelMapper();
 
 		try {	
-			Planet planet = temp.get();
-			planet = modelMapper.map(planetDTO, Planet.class);
+			Planet planetdb = temp.get();
+			Planet planet = modelMapper.map(planetDTO, Planet.class);
+			planet.setId(planetdb.getId());
 			planet = planetRepository.save(planet);		
 			planetDTO.setId(planet.getId());		
 			return modelMapper.map(planet, PlanetDTO.class);			 
@@ -86,11 +93,11 @@ public class PlanetService {
 				planetRepository.delete(temp.get());
 				return true;
 			}else {
-				return false;
+				throw new Exception();
 			}
 					
 		} catch (Exception e) {
-			return false;
+			throw new Exception();
 			
 		}
 	}

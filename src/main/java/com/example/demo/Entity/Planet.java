@@ -1,17 +1,22 @@
 package com.example.demo.Entity;
 
+import java.io.Serializable;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "api_planet")
-public class Planet extends Base {
+public class Planet extends Base implements Serializable {
 	
 	@Column(name="planet_name")
 	private String name;
@@ -19,7 +24,7 @@ public class Planet extends Base {
 	@Column(name="planet_size")
 	private double size;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "Star.id")
 	private Star star;
 	
