@@ -18,14 +18,20 @@ export class PlanetComponent implements OnInit {
       id: 0,
       name: "",
       size: 0,
-      star: {
+      starSimple: {
         id: 0,
         name: "",
         density: 0,
-        planets: null
       },
-    }
+  }
 
+  planetDto: any = {
+    "name": "",
+    "size": 0,
+    "star": {
+    	"id": 0
+    }
+  }
   star: Star;
 
   constructor(private servicioStar:StarService,private servicioPlanet:PlanetService,
@@ -59,13 +65,13 @@ export class PlanetComponent implements OnInit {
   }
 
   update(id: number){
-      this.servicioPlanet.put(id, this.planet).subscribe((data)=>{
+      this.servicioPlanet.put(id, this.planetDto).subscribe((data)=>{
         this.router.navigate(['/planets/']);
       });;
   }
 
   add(){
-    this.servicioPlanet.post(this.planet).subscribe((data)=>{
+    this.servicioPlanet.post(this.planetDto).subscribe((data)=>{
       this.router.navigate(['/planets/']);
     });;
   }
@@ -73,6 +79,10 @@ export class PlanetComponent implements OnInit {
   getOne(id: number){
     this.servicioPlanet.getOne(id).subscribe((data)=>{
       this.planet = data;
+      this.planetDto.name = data['name'];
+      this.planetDto.size = data['size'];
+      this.planetDto.star.id = data['star.id'];
+      
     });
   }
 

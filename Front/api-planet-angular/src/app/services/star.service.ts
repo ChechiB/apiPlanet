@@ -21,11 +21,12 @@ export class StarService {
 
   }
 
-  post(star: Star):Observable<Star>{
+  post(star: any):Observable<Star>{
+    console.log("En post"+star)
     return this.http.post<Star>(this._url, star)
   }
 
-  put(id:number,star:Star):Observable<Star>{
+  put(id:number,star:any):Observable<Star>{
     return this.http.put<Star>(this._url+id, star)
   }
 

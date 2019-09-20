@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import { StarService } from 'src/app/services/star.service';
 import { Star } from 'src/app/model/star';
-
 @Component({
   selector: 'app-star',
   templateUrl: './star.component.html',
@@ -13,14 +12,18 @@ export class StarComponent implements OnInit {
     id: 0,
     name: "",
     density: 0.0,
-    planets: [] = [{
+    planetsSimple: [] = [{
       id:0,
       name:"",
       size:0,
-      star:null
     }]
   }
   
+  starDto: any ={
+    name: "",
+    density: 0.0,
+  }
+
   constructor(private servicioStar:StarService,private activeRoute:ActivatedRoute,private router:Router) { 
     this.activeRoute.params.subscribe((data)=>{
       console.log(data['id'])
@@ -44,13 +47,14 @@ export class StarComponent implements OnInit {
   }
 
   update(id: number){
-      this.servicioStar.put(id, this.star).subscribe((data)=>{
+      this.servicioStar.put(id, this.starDto).subscribe((data)=>{
         this.router.navigate(['/']);
       });;
   }
 
   add(){
-    this.servicioStar.post(this.star).subscribe((data)=>{
+    console.log( this.starDto)
+    this.servicioStar.post(this.starDto).subscribe((data)=>{
       this.router.navigate(['/']);
     });;
   }
@@ -58,6 +62,8 @@ export class StarComponent implements OnInit {
   getOne(id: number){
     this.servicioStar.getOne(id).subscribe((data)=>{
       this.star = data;
+      this.starDto.name = data['name'];
+      this.starDto.density = data['density'] 
     });
   }
 

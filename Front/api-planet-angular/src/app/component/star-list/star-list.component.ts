@@ -43,7 +43,6 @@ export class StarListComponent implements OnInit {
 
   add(){
     this.router.navigate( ['star/new'] );
-    //this.router.navigate(["/new"]);
   }
 
 }

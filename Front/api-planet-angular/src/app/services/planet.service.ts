@@ -20,11 +20,11 @@ export class PlanetService {
 
   }
 
-  post(planet: Planet):Observable<Planet>{
+  post(planet: any):Observable<Planet>{
     return this.http.post<Planet>(this._url, planet)
   }
 
-  put(id:number,planet:Planet):Observable<Planet>{
+  put(id:number,planet:any):Observable<Planet>{
     return this.http.put<Planet>(this._url+id, planet)
   }
 

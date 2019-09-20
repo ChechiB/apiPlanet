@@ -1,8 +1,8 @@
-import { Star } from './star';
+import { StarSimple } from './starSimple';
 
-export interface Planet{
+export class Planet{
     id:number;
     name:string;
     size:number;
-    star: Star
+    starSimple: StarSimple
 }

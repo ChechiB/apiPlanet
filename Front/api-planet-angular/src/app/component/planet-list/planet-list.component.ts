@@ -21,8 +21,6 @@ export class PlanetListComponent implements OnInit {
   getAll(){
     this.servicio.getAll().subscribe((data)=>{
       this.planets = data;
-      console.log(this.planets);
-
     });
   }
 
