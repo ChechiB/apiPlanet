@@ -39,8 +39,8 @@ public class PlanetController {
 	public ResponseEntity getOne(@PathVariable int id) {
 		try {
 			return ResponseEntity.status(200).body(planetService.getOne(id));
-		} catch (Exception e) {
-			return ResponseEntity.status(404).body("No se encontro el Planeta solicitado");
+		} catch (StatusException e) {
+			return e.getResponseStatus();
 		}
 	}
 	
@@ -49,24 +49,21 @@ public class PlanetController {
 	public ResponseEntity getAll(){
 		try {
 			return ResponseEntity.status(200).body(planetService.getAll());
-		} catch (Exception e) {
-			return ResponseEntity.status(404).body("No se encontraron planetas");
+		} catch (StatusException e) {
+			return e.getResponseStatus();
 		}
 	}
 	
 	@PostMapping(path = "/")
 	@CrossOrigin(origins = "*")	
-	public ResponseEntity post(@RequestBody PlanetDTO planetDTO) {
+	public ResponseEntity post(@RequestBody PlanetDTO planetDTO){
 		PlanetDTO rst = new PlanetDTO();
 		try {
 			
 			return ResponseEntity.status(201).body(planetService.post(planetDTO));
 		
 		} catch (StatusException e) {
-			
 			return e.getResponseStatus();
-		}catch(Exception e) {
-			return null;
 		}
 	}
 	
@@ -77,8 +74,8 @@ public class PlanetController {
 		try {
 			rst = planetService.put(planetDTO, id);
 			return ResponseEntity.status(201).body(planetDTO);
-		} catch (Exception e) {
-			return ResponseEntity.status(400).body("Solicitud no valida");
+		} catch (StatusException e) {
+			return e.getResponseStatus();
 		}		
 	}
 	
@@ -88,9 +85,9 @@ public class PlanetController {
 		boolean rstEstado;
 		try {
 			planetService.delete(id);
-			return ResponseEntity.status(204).body("");
-		} catch (Exception e) {
-			return ResponseEntity.status(404).body("No se pudo eliminar");
+			return ResponseEntity.status(204).body("{\"Successful\": \"Correctly removed.\"}");
+		} catch (StatusException e) {
+			return e.getResponseStatus();
 		} 
 		
 	}

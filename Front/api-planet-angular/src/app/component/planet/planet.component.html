@@ -1,22 +1,21 @@
 <div class="card bg-light m-3">
     <div class="card-header">Planet</div>
-    <form>
+    <form ngNativeValidate>
         <div class="form-group m-3">
             <label for="exampleInputEmail1">Name</label>
-            <input type="text" class="form-control"  placeholder="Enter name"  [(ngModel)]="planetDto.name" name="name">
-
+            <input type="text" class="form-control"   required minlength="3" placeholder="Enter name"  [(ngModel)]="planetDto.name" name="name">            
         </div>
         <div class="form-group m-3">
             <label for="exampleInputPassword1">Size</label>
-            <input type="text" class="form-control" placeholder="Enter size" [(ngModel)]="planetDto.size" name="size">
+            <input type="number" class="form-control"  required placeholder="Enter size" [(ngModel)]="planetDto.size" name="size">
         </div>
         <div class="form-group m-3">
             <label for="exampleInputPassword1">Star</label>
-            <select class="custom-select " id="inputGroupSelect01" [(ngModel)]="planetDto.star.id" name = "starId" >
-                <option selected>Please, choose a Star</option>
+            <select class="custom-select " id="inputGroupSelect01" [(ngModel)]="planetDto.star.id" required  name = "starId" >
                 <option [value]="star.id" *ngFor="let star of stars">{{star.name}}</option>
             </select>
         </div>
+        <div class="alert alert-danger" *ngIf="errorFlag" role="alert">{{errorMessage}}</div>
         <button type="submit" class="btn btn-primary m-3" (click)="save()">Save</button>
         <button type="submit" class="btn btn-danger m-3" [routerLink]="['/planets']" routerLinkActive="router-link-active" >Cancelar</button>
     </form>

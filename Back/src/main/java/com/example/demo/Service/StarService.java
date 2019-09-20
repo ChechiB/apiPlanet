@@ -2,17 +2,20 @@ package com.example.demo.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.DTO.PlanetDTO;
 import com.example.demo.DTO.StarDTO;
 import com.example.demo.Entity.Star;
 import com.example.demo.Repository.StarRepository;
+import com.example.exception.StatusException;
 
 @Service
 public class StarService {
@@ -22,7 +25,7 @@ public class StarService {
 		this.starRepository = starRepository;
 	}
 	
-	public StarDTO getOne(int id) throws Exception{
+	public StarDTO getOne(int id) throws StatusException{
 		Optional<Star> tmpStar = starRepository.findById(id);
 		
 		try {
@@ -30,11 +33,15 @@ public class StarService {
 			ModelMapper modelMapper = new ModelMapper();
 			return modelMapper.map(star, StarDTO.class);
 		} catch (Exception e) {
-			throw new Exception();
+			if(e.getClass().getCanonicalName().equals(NoSuchElementException.class.getCanonicalName())) {
+				throw new StatusException("Star not found. Please check the id",404);
+			}else {
+				throw new StatusException("Bad request. Please check the values",404);
+			}
 		}
 	}
 	
-	public List<StarDTO> getAll() throws Exception{
+	public List<StarDTO> getAll() throws StatusException{
 		List<StarDTO> starDTOs = new ArrayList<StarDTO>();
 		ModelMapper modelMapper = new ModelMapper();
 		try {
@@ -45,25 +52,29 @@ public class StarService {
 			
 			return starDTOs;
 		} catch (Exception e) {
-			throw new Exception();
+			throw new StatusException("Bad request. Please check the values",404);
+			
 		}
 	}
 	
-	public StarDTO post(StarDTO starDTO) throws Exception{
+	public StarDTO post(StarDTO starDTO) throws StatusException{
 		ModelMapper modelMapper = new ModelMapper();
 		try {
 			Star star = modelMapper.map(starDTO, Star.class);
 			//Por standar se devuelve un objeto
 			star = starRepository.save(star);
 			return modelMapper.map(star, StarDTO.class);
-		} catch (Exception e) {
-			System.out.print("Error unique" + e);
-			throw new Exception();
+		}  catch (Exception e) {
+			if(e.getClass().getCanonicalName().equals(DataIntegrityViolationException.class.getCanonicalName())) {
+				throw new StatusException("Name must be unique",400);
+			}else {
+				throw new StatusException("Bad request. Please check the values",400);
+			}
 		}
 		
 	}
 	
-	public StarDTO put(StarDTO starDTO, int id) throws Exception {
+	public StarDTO put(StarDTO starDTO, int id) throws StatusException {
 		Optional<Star> temp = starRepository.findById(id);		
 		ModelMapper modelMapper = new ModelMapper();
 
@@ -74,12 +85,16 @@ public class StarService {
 			star = starRepository.save(star);		
 			starDTO.setId(star.getId());		
 			return modelMapper.map(star, StarDTO.class);			 
-		} catch (Exception e) {			
-			throw new Exception();
+		} catch (Exception e) {
+			if(e.getClass().getCanonicalName().equals(DataIntegrityViolationException.class.getCanonicalName())) {
+				throw new StatusException("Name must be unique",400);
+			}else {
+				throw new StatusException("Bad request. Please check the values",400);
+			}
 		}			
 	}
 
-	public boolean delete(int id) throws Exception {
+	public boolean delete(int id) throws StatusException {
 		try {				
 			if(starRepository.existsById(id)) {
 				Optional<Star> temp = starRepository.findById(id);	
@@ -89,8 +104,8 @@ public class StarService {
 				throw new Exception();
 			}
 					
-		} catch (Exception e) {
-			throw new Exception();			
+		}catch (Exception e) {
+			throw new StatusException("Bad request. Please verify the id",400);			
 		}
 	}
 	

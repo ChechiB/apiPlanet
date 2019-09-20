@@ -24,7 +24,8 @@ export class PlanetComponent implements OnInit {
         density: 0,
       },
   }
-
+  errorFlag=false;
+  errorMessage="";
   planetDto: any = {
     "name": "",
     "size": 0,
@@ -73,7 +74,14 @@ export class PlanetComponent implements OnInit {
   add(){
     this.servicioPlanet.post(this.planetDto).subscribe((data)=>{
       this.router.navigate(['/planets/']);
-    });;
+    },
+    error=>{
+      this.errorFlag = true;
+      this.errorMessage = error.error['Error'];
+      console.error("error");
+      console.error(error.error);
+    }
+    );
   }
 
   getOne(id: number){
@@ -83,7 +91,12 @@ export class PlanetComponent implements OnInit {
       this.planetDto.size = data['size'];
       this.planetDto.star.id = data['star.id'];
       
-    });
+    },
+    error=>{
+      console.error("error");
+      console.error(error);
+    }
+    );
   }
 
 }

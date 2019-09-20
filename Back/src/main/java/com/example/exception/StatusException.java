@@ -13,7 +13,7 @@ public class StatusException extends Exception{
 	}
 	
 	public ResponseEntity getResponseStatus() {
-		return ResponseEntity.status(this.status).body("{\"Error\""+ this.message+".\"}");
+		return ResponseEntity.status(this.status).body("{\"Error\": \""+ this.message+".\"}");
 	}
 	
 }

@@ -3,13 +3,16 @@ package com.example.demo.Service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolationException;
+import javax.validation.UnexpectedTypeException;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -30,21 +33,24 @@ public class PlanetService {
 	}
 	
 	
-	public PlanetDTO getOne(int id) throws Exception{
+	public PlanetDTO getOne(int id) throws StatusException{
 		Optional<Planet> tmpPlanet = planetRepository.findById(id);
 		
 		try {
 			Planet planet = tmpPlanet.get();
 			ModelMapper modelMapper = new ModelMapper();
 			return modelMapper.map(planet, PlanetDTO.class);
-		} catch (Exception e) {
-			
-			throw new Exception();
+		}  catch (Exception e) {
+			if(e.getClass().getCanonicalName().equals(NoSuchElementException.class.getCanonicalName())) {
+				throw new StatusException("Planet not found. Please check the id",404);
+			}else {
+				throw new StatusException("Bad request. Please check the values",404);
+			}
 		}
 	}
 	
 	
-	public List<PlanetDTO> getAll() throws Exception{
+	public List<PlanetDTO> getAll() throws StatusException{
 		List<PlanetDTO> planetDTOs = new ArrayList<PlanetDTO>();
 		ModelMapper modelMapper = new ModelMapper();
 		try {
@@ -54,16 +60,12 @@ public class PlanetService {
 			}			
 			return planetDTOs;
 		} catch (Exception e) {
-			if(e.getClass().equals(ConstraintViolationException.class)) {
-				throw new Exception("Name must be unique");
-			}else {
-				throw new Exception();
-			}
+			throw new StatusException("Bad request. Please check the values",404);
 			
 		}
 	}
 
-	public PlanetDTO post(PlanetDTO planetDTO) throws Exception{
+	public PlanetDTO post(PlanetDTO planetDTO) throws StatusException{
 		ModelMapper modelMapper = new ModelMapper();
 		
 		Planet planet = modelMapper.map(planetDTO, Planet.class);
@@ -73,17 +75,20 @@ public class PlanetService {
 			planet = planetRepository.save(planet);
 			return modelMapper.map(planet, PlanetDTO.class);
 		}  catch (Exception e) {
+			System.out.println("Excepcion 1: " + e);
 			if(e.getClass().getCanonicalName().equals(DataIntegrityViolationException.class.getCanonicalName())) {
-				throw new StatusException("Name must be unique",404);
+				throw new StatusException("Name must be unique",400);
+			}else if((e.getClass().getCanonicalName().equals(InvalidDataAccessApiUsageException.class.getCanonicalName()))){
+				throw new StatusException("Planet must has a Star",400);
 			}else {
-				throw new StatusException("Otro error",404);
+				throw new StatusException("Bad request. Please check the values",400);
 			}
 		}
 			
 		
 	}
 
-	public PlanetDTO put(PlanetDTO planetDTO, int id) throws Exception {
+	public PlanetDTO put(PlanetDTO planetDTO, int id) throws StatusException {
 		Optional<Planet> temp = planetRepository.findById(id);		
 		ModelMapper modelMapper = new ModelMapper();
 
@@ -94,12 +99,18 @@ public class PlanetService {
 			planet = planetRepository.save(planet);		
 			planetDTO.setId(planet.getId());		
 			return modelMapper.map(planet, PlanetDTO.class);			 
-		} catch (Exception e) {			
-			throw new Exception();
+		} catch (Exception e) {
+			if(e.getClass().getCanonicalName().equals(DataIntegrityViolationException.class.getCanonicalName())) {
+				throw new StatusException("Name must be unique",400);
+			}else if(e.getClass().getCanonicalName().equals(InvalidDataAccessApiUsageException.class.getCanonicalName())){
+				throw new StatusException("Planet must has a Star",400);
+			}else {
+				throw new StatusException("Bad request. Please check the values",400);
+			}
 		}			
 	}
 	
-	public boolean delete(int id) throws Exception {
+	public boolean delete(int id) throws StatusException {
 		try {				
 			if(planetRepository.existsById(id)) {
 				Optional<Planet> temp = planetRepository.findById(id);	
@@ -110,8 +121,7 @@ public class PlanetService {
 			}
 					
 		} catch (Exception e) {
-			throw new Exception();
-			
+			throw new StatusException("Bad request. Please verify the id",400);			
 		}
 	}
 	

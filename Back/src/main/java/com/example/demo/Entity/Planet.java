@@ -30,6 +30,7 @@ public class Planet extends Base implements Serializable {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "Star.id")
+	@NotNull
 	private Star star;
 	
 	public Planet() {}

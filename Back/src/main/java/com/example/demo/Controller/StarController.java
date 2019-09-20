@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.DTO.PlanetDTO;
 import com.example.demo.DTO.StarDTO;
 import com.example.demo.Service.StarService;
+import com.example.exception.StatusException;
 
 @Controller
 @RestController
@@ -33,63 +34,58 @@ public class StarController {
 	
 	//https://www.baeldung.com/spring-response-entity
 	@GetMapping(path = "/{id}")
-	@Transactional
 	@CrossOrigin(origins = "*")	
 	public ResponseEntity getOne(@PathVariable int id) {
 		try {
 			return ResponseEntity.status(200).body(starService.getOne(id));
-		} catch (Exception e) {
-			return ResponseEntity.status(404).body("No se encontro la estrella solicitada");
+		} catch (StatusException e) {
+			return e.getResponseStatus();
 		}
 	}
 	
 	@GetMapping(path = "/")
-	@Transactional
 	@CrossOrigin(origins = "*")	
 	public ResponseEntity getAll(){
 		try {
 			return ResponseEntity.status(200).body(starService.getAll());
-		} catch (Exception e) {
-			return ResponseEntity.status(404).body("No se encontraron estrellas");
+		}catch (StatusException e) {
+			return e.getResponseStatus();
 		}
 	}
 	
 	@PostMapping(path = "/")
-	@Transactional
 	@CrossOrigin(origins = "*")	
 	public ResponseEntity post(@RequestBody StarDTO starDTO) {
 		StarDTO rst = new StarDTO();
 		try {
 			rst = starService.post(starDTO);
 			return ResponseEntity.status(201).body(rst);
-		} catch (Exception e) {
-			return ResponseEntity.status(404).body("Solicitud no valida");
+		}catch (StatusException e) {
+			return e.getResponseStatus();
 		}
 	}
 	
 	@PutMapping(path = "/{id}")
-	@Transactional
 	@CrossOrigin(origins = "*")	
 	public ResponseEntity put(@RequestBody StarDTO starDTO,@PathVariable int id) {
 		StarDTO rst = new StarDTO();
 		try {
 			rst = starService.put(starDTO, id);
 			return ResponseEntity.status(201).body(starDTO);
-		} catch (Exception e) {
-			return ResponseEntity.status(404).body("Solicitud no valida");
+		} catch (StatusException e) {
+			return e.getResponseStatus();
 		}
 		
 	}
 	
 	@DeleteMapping(path = "/{id}")	
-	@Transactional
 	@CrossOrigin(origins = "*")	
 	public ResponseEntity delete(@PathVariable int id) {
 		try {
 			starService.delete(id); 
 			return ResponseEntity.status(204).body("");
-		} catch (Exception e) {
-			return ResponseEntity.status(404).body("No se pudo eliminar");
-		}
+		}  catch (StatusException e) {
+			return e.getResponseStatus();
+		} 
 	}
 }
