@@ -34,8 +34,7 @@ public class PlanetController {
 		this.planetService = planetService;
 	}
 	
-	@GetMapping(path = "/{id}")
-	
+	@GetMapping(path = "/{id}")	
 	@CrossOrigin(origins = "*")	
 	public ResponseEntity getOne(@PathVariable int id) {
 		try {
@@ -45,8 +44,7 @@ public class PlanetController {
 		}
 	}
 	
-	@GetMapping(path = "/")
-	
+	@GetMapping(path = "/")	
 	@CrossOrigin(origins = "*")	
 	public ResponseEntity getAll(){
 		try {
@@ -57,7 +55,6 @@ public class PlanetController {
 	}
 	
 	@PostMapping(path = "/")
-	
 	@CrossOrigin(origins = "*")	
 	public ResponseEntity post(@RequestBody PlanetDTO planetDTO) {
 		PlanetDTO rst = new PlanetDTO();
@@ -74,6 +71,7 @@ public class PlanetController {
 	}
 	
 	@PutMapping(path = "/{id}")
+	@CrossOrigin(origins = "*")	
 	public ResponseEntity put(@RequestBody PlanetDTO planetDTO,@PathVariable int id) {
 		PlanetDTO rst = new PlanetDTO();
 		try {
@@ -85,6 +83,7 @@ public class PlanetController {
 	}
 	
 	@DeleteMapping(path = "/{id}")	
+	@CrossOrigin(origins = "*")	
 	public ResponseEntity delete(@PathVariable int id) {
 		boolean rstEstado;
 		try {

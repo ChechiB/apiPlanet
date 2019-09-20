@@ -1,1 +1,29 @@
-<p>tabla works!</p>
+<div>
+    <button type="button" class="btn btn-primary btn-block" (click)="add()">NEW</button>
+</div>
+
+<div>
+    <table class="table text-center">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Size</th>
+                <th scope="col">Star</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of planets">
+                <th >{{item.id}}</th>
+                <td>{{item.name}}</td>
+                <td>{{item.size}}</td>
+                <td><b>Name: </b>{{item.star.name}} <b>Density: </b>{{item.star.density}}</td>
+                <td>
+                    <button type="button" class="btn btn-danger" (click)="delete(item.id)">Delete</button>
+                    <button type="button" class="btn btn-warning" (click)="update(item.id)">Edit</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
