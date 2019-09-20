@@ -10,7 +10,7 @@
             <label for="exampleInputPassword1">Density</label>
             <input type="text" class="form-control" id="inputDensity" placeholder="Enter density" [(ngModel)]="starDto.density" name="densityName">
         </div>
-        
+        <div class="alert alert-success" *ngIf="successFlag" role="alert">{{successMessage}}</div>
         <button type="submit" class="btn btn-primary m-3" (click)="save()">Save</button>
         <button type="submit" class="btn btn-danger m-3" [routerLink]="['/stars']" routerLinkActive="router-link-active" >Cancelar</button>
     </form>

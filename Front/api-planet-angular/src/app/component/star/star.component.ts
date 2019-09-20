@@ -26,6 +26,8 @@ export class StarComponent implements OnInit {
 
   errorFlag=false;
   errorMessage="";
+  successFlag = false;
+  successMessage = "";
 
   constructor(private servicioStar:StarService,private activeRoute:ActivatedRoute,private router:Router) { 
     this.activeRoute.params.subscribe((data)=>{
@@ -51,11 +53,15 @@ export class StarComponent implements OnInit {
 
   update(id: number){
       this.servicioStar.put(id, this.starDto).subscribe((data)=>{
-        this.router.navigate(['/stars/']);
+        this.errorFlag = false;
+        this.successFlag = true;
+        this.successMessage = "Successful update!"
+        //this.router.navigate(['/stars/']);
       },
         error=>{
+        this.successFlag = false;
         this.errorFlag = true;
-        this.errorMessage = error.error.message;
+        this.errorMessage = error.error['Error'];
         console.error("error");
         console.error(error);
       }
@@ -65,11 +71,15 @@ export class StarComponent implements OnInit {
   add(){
     console.log( this.starDto)
     this.servicioStar.post(this.starDto).subscribe((data)=>{
-      this.router.navigate(['/stars/']);
+      this.errorFlag = false;
+      this.successFlag = true;
+      this.successMessage = "Correctly saved!"
+      //this.router.navigate(['/stars/']);
     },
     error=>{
+      this.successFlag = false;
       this.errorFlag = true;
-      this.errorMessage = error.error;
+      this.errorMessage = error.error['Error'];
       console.error("error");
       console.error(error);
     }

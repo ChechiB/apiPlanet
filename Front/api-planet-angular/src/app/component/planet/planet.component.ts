@@ -24,8 +24,7 @@ export class PlanetComponent implements OnInit {
         density: 0,
       },
   }
-  errorFlag=false;
-  errorMessage="";
+  
   planetDto: any = {
     "name": "",
     "size": 0,
@@ -34,6 +33,11 @@ export class PlanetComponent implements OnInit {
     }
   }
   star: Star;
+  errorFlag=false;
+  errorMessage="";
+  successFlag = false;
+  successMessage = "";
+
 
   constructor(private servicioStar:StarService,private servicioPlanet:PlanetService,
     private activeRoute:ActivatedRoute,private router:Router) { 
@@ -67,16 +71,31 @@ export class PlanetComponent implements OnInit {
 
   update(id: number){
       this.servicioPlanet.put(id, this.planetDto).subscribe((data)=>{
-        this.router.navigate(['/planets/']);
-      });;
+        this.errorFlag = false;
+        this.successFlag = true;
+        this.successMessage = "Successful update!"
+        //this.router.navigate(['/planets/']);
+      },
+      error=>{
+        this.errorFlag = true;
+        this.successFlag = false;
+        this.errorMessage = error.error['Error'];
+        console.error("error");
+        console.error(error.error);
+      }
+      );
   }
 
   add(){
     this.servicioPlanet.post(this.planetDto).subscribe((data)=>{
-      this.router.navigate(['/planets/']);
+      this.successFlag = true;
+      this.errorFlag = false;
+      this.successMessage = "Correctly saved!"
+      //this.router.navigate(['/planets/']);
     },
     error=>{
-      this.errorFlag = true;
+      this.errorFlag = false;
+      this.successFlag = true;
       this.errorMessage = error.error['Error'];
       console.error("error");
       console.error(error.error);
