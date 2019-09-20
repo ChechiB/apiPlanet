@@ -1,17 +1,24 @@
-<form>
-    <div class="form-group">
-        <label for="exampleInputEmail1">Email address</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-            placeholder="Enter email">
-        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-    </div>
-    <div class="form-group">
-        <label for="exampleInputPassword1">Password</label>
-        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-    </div>
-    <div class="form-group form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<div class="card bg-light m-3">
+    <div class="card-header">Planet</div>
+    <form>
+        <div class="form-group m-3">
+            <label for="exampleInputEmail1">Name</label>
+            <input type="text" class="form-control"  placeholder="Enter name"  [(ngModel)]="planet.name" name="name">
+
+        </div>
+        <div class="form-group m-3">
+            <label for="exampleInputPassword1">Size</label>
+            <input type="text" class="form-control" placeholder="Enter size" [(ngModel)]="planet.size" name="size">
+        </div>
+        <div class="form-group m-3">
+            <label for="exampleInputPassword1">Star</label>
+            <select class="custom-select " id="inputGroupSelect01" [(ngModel)]="planet.star.id" name = "starId" >
+                <option selected>Please, choose a Star</option>
+                <option [value]="star.id" *ngFor="let star of stars">{{star.name}}</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary m-3" (click)="save()">Save</button>
+        <button type="submit" class="btn btn-danger m-3" [routerLink]="['/planets']" routerLinkActive="router-link-active" >Cancelar</button>
+    </form>
+</div>
+planet <pre>{{planet| json}}</pre>

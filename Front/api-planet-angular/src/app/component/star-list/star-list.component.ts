@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { PlanetService } from 'src/app/services/planet.service';
-import { Planet } from 'src/app/model/planet';
+import { Star } from 'src/app/model/star';
 import { Router } from '@angular/router';
+import { StarService } from 'src/app/services/star.service';
 
 @Component({
-  selector: 'app-tabla',
-  templateUrl: './tabla.component.html',
+  selector: 'app-star-list',
+  templateUrl: './star-list.component.html',
   styles: []
 })
-export class TablaComponent implements OnInit {
-  
-  planets: Planet[] = [];
+export class StarListComponent implements OnInit {
 
-  constructor(private servicio:PlanetService, private router:Router) { 
+  stars: Star[] = [];
+
+  constructor(private servicio:StarService, private router:Router) { 
     this.getAll();
   }
 
@@ -21,8 +21,8 @@ export class TablaComponent implements OnInit {
 
   getAll(){
     this.servicio.getAll().subscribe((data)=>{
-      this.planets = data;
-      console.log(this.planets);
+      this.stars = data;
+      console.log(this.stars);
 
     });
   }
@@ -38,12 +38,12 @@ export class TablaComponent implements OnInit {
   }
 
   update(id:number){
-    this.router.navigate(["planet/"+id]);
+    this.router.navigate(["star/"+id]);
   }
 
   add(){
-    console.log("planet/new");
-    this.router.navigate( ['planet/new'] );
+    this.router.navigate( ['star/new'] );
     //this.router.navigate(["/new"]);
   }
+
 }

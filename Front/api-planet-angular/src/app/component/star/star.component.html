@@ -1,1 +1,18 @@
-<p>star works!</p>
+<div class="card bg-light m-3">
+    <div class="card-header">Star</div>
+    <form>
+        <div class="form-group m-3">
+            <label for="exampleInputEmail1">Name</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                placeholder="Enter name" [(ngModel)]="star.name" name="starName">
+
+        </div>
+        <div class="form-group m-3">
+            <label for="exampleInputPassword1">Density</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                placeholder="Enter density" [(ngModel)]="star.density" name="densityName">
+        </div>
+        <button type="submit" class="btn btn-primary m-3" (click)="save(id)">Save</button>
+        <button type="submit" class="btn btn-danger m-3" [routerLink]="['/stars']" routerLinkActive="router-link-active" >Cancelar</button>
+    </form>
+</div>

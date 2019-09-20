@@ -15,17 +15,17 @@ export class PlanetService {
     return this.http.get<Planet[]>(this._url);
   }
 
-  getOne(id:number){
-    this.http.get(this._url+id);
+  getOne(id:number): Observable<Planet>{
+    return this.http.get<Planet>(this._url+id);
 
   }
 
-  post(planet: Planet){
-    this.http.post(this._url, planet)
+  post(planet: Planet):Observable<Planet>{
+    return this.http.post<Planet>(this._url, planet)
   }
 
-  put(id:number,planet:Planet){
-    this.http.post(this._url+id, planet)
+  put(id:number,planet:Planet):Observable<Planet>{
+    return this.http.put<Planet>(this._url+id, planet)
   }
 
   delete(id:number): Observable<any>{
