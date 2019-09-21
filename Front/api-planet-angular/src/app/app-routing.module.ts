@@ -15,6 +15,7 @@ const routes: Routes = [ // El orden determina la precedencia. El primer matcheo
   {path: 'planets', component: PlanetListComponent},
   {path: 'stars', component: StarListComponent},
   {path: 'home', component: HomeComponent},
+  {path: '', component: HomeComponent},
 ];
 
 @NgModule({

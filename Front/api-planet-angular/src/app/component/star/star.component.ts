@@ -77,11 +77,9 @@ export class StarComponent implements OnInit {
       //this.router.navigate(['/stars/']);
     },
     error=>{
-      this.successFlag = false;
       this.errorFlag = true;
+      this.successFlag = false;
       this.errorMessage = error.error['Error'];
-      console.error("error");
-      console.error(error);
     }
     );
   }

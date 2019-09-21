@@ -80,8 +80,6 @@ export class PlanetComponent implements OnInit {
         this.errorFlag = true;
         this.successFlag = false;
         this.errorMessage = error.error['Error'];
-        console.error("error");
-        console.error(error.error);
       }
       );
   }
@@ -90,12 +88,12 @@ export class PlanetComponent implements OnInit {
     this.servicioPlanet.post(this.planetDto).subscribe((data)=>{
       this.successFlag = true;
       this.errorFlag = false;
-      this.successMessage = "Correctly saved!"
-      //this.router.navigate(['/planets/']);
+      this.successMessage = "Correctly saved!";
+      this.router.navigate(['/planets/']);
     },
     error=>{
-      this.errorFlag = false;
-      this.successFlag = true;
+      this.errorFlag = true;
+      this.successFlag = false;
       this.errorMessage = error.error['Error'];
       console.error("error");
       console.error(error.error);

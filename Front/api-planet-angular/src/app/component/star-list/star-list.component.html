@@ -20,7 +20,8 @@
                 <td>{{star.name}}</td>
                 <td>{{star.density}}</td>
                 <td><span class="badge badge-dark" *ngFor="let planet of star.planets"><b>Name:</b>{{planet.name}}
-                        <b>Size: </b>{{planet.size}}</span></td>
+                        <b>Size: </b>{{planet.size}}</span>
+                </td>
                 <td>
                     <button type="button" class="btn btn-danger" (click)="delete(star.id)">Delete</button>
                     <button type="button" class="btn btn-warning" (click)="update(star.id)">Edit</button>

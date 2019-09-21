@@ -75,7 +75,7 @@ public class PlanetService {
 			planet = planetRepository.save(planet);
 			return modelMapper.map(planet, PlanetDTO.class);
 		}  catch (Exception e) {
-			System.out.println("Excepcion 1: " + e);
+			System.out.println("Excepcion 1: " + e.getMessage());
 			if(e.getClass().getCanonicalName().equals(DataIntegrityViolationException.class.getCanonicalName())) {
 				throw new StatusException("Name must be unique",400);
 			}else if((e.getClass().getCanonicalName().equals(InvalidDataAccessApiUsageException.class.getCanonicalName()))){
